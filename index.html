@@ -4,75 +4,191 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time of Day</title>
-    
+
     <style>
-        /* We target the HTML element directly for our background color swap */
         html {
-            background-color: #f4f4f9; 
-            transition: background-color 0.5s ease; /* Makes the color change smooth */
+            background-color: #f4f4f9;
+            transition: background-color 0.5s ease;
         }
 
         body {
-            font-family: sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            margin: 40px 0;
             color: #333;
         }
 
-        /* Our main container for the content */
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: auto;
-            padding: 20px;
+            padding: 25px 30px 35px;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
         }
 
-        /* Styling our main image */
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #day-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
         #time-pic {
-          max-width: 300px; /* Keeps our variable-sized images consistent */
-          height: auto;     /* Prevents stretching/squishing */
-          border-radius: 8px;
-          margin-top: 20px;
-          
-          /* Adds a "Snazzy" Shadow: horizontal, vertical, blur, spread, and color */
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .explanation {
+            max-width: 580px;
+            margin: 0 auto 20px;
+            text-align: left;
+        }
+
+        .explanation ul {
+            display: inline-block;
+            text-align: left;
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 id="main-greeting">Time of Day by NAME HERE</h1>
-        
+        <h1 id="main-greeting">Time of Day by John Nelson</h1>
+
         <h2 id="time-text">What time is it?</h2>
 
-        <p>This page will change based on the hour of the day.</p>
-        <p>Add your explanation of what the page does, and how it works here.</p>
+        <p id="day-text">Today is ...</p>
 
-        <img id="time-pic" src="https://dummyimage.com/300x400" alt="Time of Day Image">
+        <div class="explanation">
+            <p>
+                This page uses JavaScript to determine the current hour from the client's system clock
+                and then changes the message, image, and background color based on the time of day.
+            </p>
+
+            <ul>
+                <li>Morning: 5am to 12 noon</li>
+                <li>Afternoon: 12 noon to 6pm</li>
+                <li>Evening: 6pm to 11pm</li>
+                <li>Night: 11pm to 5am</li>
+            </ul>
+
+            <p>
+                To do this, I use the <strong>Date</strong> object and its
+                <strong>getHours()</strong> and <strong>getDay()</strong> methods.
+                I also use <strong>document.getElementById()</strong> and
+                <strong>document.querySelector()</strong> to update the text, image,
+                and page color dynamically.
+            </p>
+        </div>
+
+        <img id="time-pic" src="images/morning.jpg" alt="Time of day image">
     </div>
 
     <script>
-        // We will use this section to write our if/else logic
-        // Example: document.querySelector('#time-text').innerHTML = "Good Morning!";
-        
-        /* Below, we would target the 'html' element to change 
-           the background color using document.querySelector('html') 
+        /*
+            This page uses JavaScript to determine the current hour, and presents
+            a different image, custom message, and color based on each of the
+            following times of day:
+
+            Morning (5am to 12 noon)
+            Afternoon (12 noon to 6pm)
+            Evening (6pm to 11pm)
+            Night (11pm to 5am)
         */
 
+        let myDate = new Date();
+        let myHour = myDate.getHours();
+        let myDay = myDate.getDay();
+
+        let mySentence = "";
+        let myColor = "";
+        let myPick = "";
+
+        let dayName = "";
+
+        // Extra credit: dynamically show correct day of the week
+        if (myDay === 0) {
+            dayName = "Sunday";
+        } else if (myDay === 1) {
+            dayName = "Monday";
+        } else if (myDay === 2) {
+            dayName = "Tuesday";
+        } else if (myDay === 3) {
+            dayName = "Wednesday";
+        } else if (myDay === 4) {
+            dayName = "Thursday";
+        } else if (myDay === 5) {
+            dayName = "Friday";
+        } else {
+            dayName = "Saturday";
+        }
+
+        // Determine message, color, and image based on time of day
+        if (myHour >= 5 && myHour < 12) {
+            mySentence = "Good Morning!";
+            myColor = "#f7b267";
+            myPick = "morning.jpg";
+        } else if (myHour >= 12 && myHour < 18) {
+            mySentence = "Good Afternoon!";
+            myColor = "#90be6d";
+            myPick = "afternoon.jpg";
+        } else if (myHour >= 18 && myHour < 23) {
+            mySentence = "Good Evening!";
+            myColor = "#577590";
+            myPick = "evening.jpg";
+        } else {
+            mySentence = "Good Night!";
+            myColor = "#6a4c93";
+            myPick = "night.jpg";
+        }
+
+        // Add the folder path to the image file name
+        myPick = "images/" + myPick;
+
+        // Add sentence to page
+        document.getElementById("time-text").innerHTML = mySentence;
+
+        // Add day of week to page
+        document.getElementById("day-text").innerHTML = "Today is " + dayName + ".";
+
+        // Change image
+        document.getElementById("time-pic").src = myPick;
+        document.getElementById("time-pic").alt = mySentence + " image";
+
+        // Change background color
+        document.querySelector("html").style.backgroundColor = myColor;
+
         // Fixes HTML/CSS Checker links
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             var currentUrl = window.location.href;
-            document.getElementById("html-validate").href = "https://validator.w3.org/nu/?doc=" + encodeURIComponent(currentUrl);
-            document.getElementById("css-validate").href = "https://jigsaw.w3.org/css-validator/validator?uri=" + encodeURIComponent(currentUrl);
+            document.getElementById("html-validate").href =
+                "https://validator.w3.org/nu/?doc=" + encodeURIComponent(currentUrl);
+            document.getElementById("css-validate").href =
+                "https://jigsaw.w3.org/css-validator/validator?uri=" + encodeURIComponent(currentUrl);
         });
     </script>
 
-    <footer style="margin-top: 30px;">
+    <footer>
         <small>
-            <a id="html-validate" href="" target="_blank">Check HTML</a> | 
+            <a id="html-validate" href="" target="_blank">Check HTML</a> |
             <a id="css-validate" href="" target="_blank">Check CSS</a>
         </small>
     </footer>
